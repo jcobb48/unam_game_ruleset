@@ -1,0 +1,75 @@
+name: TURN_MAIN_CONFIG
+weight: 0
+configs:
+  map_configuration:
+    distance_units: meters
+    map_unit_value: 1.5
+  turns_configuration:
+    round_order: |-
+      params character
+      let init_roll = $TOOLS:roll("1d20")
+      set character.values.iniciativa = $character.values.percepcion_base + $character.values.agilidad_base + $init_roll
+      output $character.values.iniciativa
+    on_combat_start: |-
+      $TOOLS:print("")
+      $TOOLS:print("COMBAT_START")
+      $EVENTS:trigger("COMBAT_START")
+      $SCRIPTS:apply_default_states_to_characters()
+      let GLOBALS.current_round = 0
+    on_start_round: |-
+      $TOOLS:print(" ")
+      $TOOLS:print("ROUND STARTED!!!")
+      $EVENTS:trigger("START_ROUND")
+      set GLOBALS.current_round = $GLOBALS.current_round + 1
+    on_start_turn: |-
+      params character
+      
+      $TOOLS:print(" ")
+      $TOOLS:print($character.name, " is playing" )
+      $TOOLS:print("current position:",$character.position.x,",",$character.position.y)
+      $EVENTS:trigger("START_TURN", $character)
+      
+      $SCRIPTS:check_end_turn($character)
+    turn_script: |-
+      params character
+      
+      $SCRIPTS:exec_random_action($character)
+      $CHARACTERS:run_foreach_character("check_end_game")
+      $SCRIPTS:check_end_turn($character)
+
+    on_finish_turn: |-
+      params character
+      $EVENTS:trigger("FINISH_TURN")
+    on_finish_round: |-
+      set GLOBALS.current_round = $GLOBALS.current_round + 1
+      $EVENTS:trigger("FINISH_ROUND")
+    on_combat_finish: |-
+      $EVENTS:trigger("COMBAT_FINISH")
+#---
+#ruleset: MAIN_CONFIG_2
+#weight: 10000
+#configs:
+#  map_configuration:
+#    distance_units: meters
+#    map_unit_value: 1.5
+#  turns_configuration:
+#    round_order: !-
+#      parms character
+#      set character.initiative = character.percepcion_base + character.agilidad_base
+#      output character.initiative
+#    on_combat_start: |-
+#      $EVENTS:trigger("COMBAT_START")
+#    on_start_round: |-
+#      $EVENTS:trigger("START_ROUND")
+#    on_start_turn: |-
+#      $EVENTS:trigger("START_TURN")
+#    turn_script:
+#      $CHARACTERS:request_action_no_wait($TURN_MANAGER.current_character.id, 3)
+#    on_finish_turn: |-
+#        $EVENTS:trigger("FINISH_TURN")
+#    on_finish_round: |-
+#      $CHARACTERS.wait_for_actions(10)
+#      $CHARACTERS:exec_queued_actions()
+#      $EVENTS:trigger("FINISH_ROUND")
+#    on_combat_finish: |-
+#      $EVENTS:trigger("COMBAT_FINISH")

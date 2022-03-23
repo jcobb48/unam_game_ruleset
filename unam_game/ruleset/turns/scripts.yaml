@@ -1,0 +1,71 @@
+name: TURN_SCRIPT
+weight: 0
+scripts:
+  - name: request_and_exec_action
+    script: |-
+      params text
+      $TOOLS:print("request_and_exec_action is not implemented yet...")
+  - name: exec_random_action
+    script: |-
+      params character
+      
+      # $CHARACTER:request_action_input(character)
+      # temporal function to create simulated action request
+      let action_request = $TOOLS:create_fake_action_request($character)
+      $TOOLS:print(" ")
+      $TOOLS:print($character.name," executes action ",$action_request.action_name)
+      $CHARACTERS:execute_action($character , $action_request)
+      $TOOLS:print($character.values.acciones_realizadas,"acciones_realizadas")
+
+  - name: check_end_turn
+    script: |-
+      params character
+      if ($character.values.acciones_restantes < 1) or ($character.values.stamina_actual < 1) or ($character.values.hp_actual < 1) 
+      then
+        $TOOLS:print($character.name,"- actions left ",$character.values.acciones_restantes,"- hp ",$character.values.hp_actual,"- stamina ",$character.values.stamina_actual)
+        $TOOLS:print("TURN END")
+        $TURNS:next_turn()
+      else
+        $TOOLS:print($character.name,"- actions left ",$character.values.acciones_restantes,"- hp ",$character.values.hp_actual,"- stamina ",$character.values.stamina_actual)
+      end-if
+
+  - name: check_end_game
+    script: |-
+      params character
+      
+      if ($character.values.stamina_actual < 1) or ($character.values.hp_actual < 1) 
+      then   
+        $TOOLS:print(" ")
+        $TOOLS:print($character.name,"- iniciative",$character.values.iniciativa,"- actions left ",$character.values.acciones_restantes,"- hp ",$character.values.hp_actual,"- stamina ",$character.values.stamina_actual)
+        $TOOLS:print($character.name," loose after", $GLOBALS.current_round, "rounds")
+        $TOOLS:exit_combat_mode()
+      else
+        # pass
+      end-if
+
+  - name: apply_default_states
+    script: |-
+      params character
+      $CHARACTERS:apply_state($character, "RegeneracionBase")
+
+  - name: apply_default_states_to_characters
+    script: |-
+      $CHARACTERS:run_foreach_character("apply_default_states")
+
+  - name: restore_round_stats
+    script: |-
+      params character
+      $CHARACTERS:set_character_value($character, "acciones_realizadas", 0)
+      let new_stamina_restado = $character.values.stamina_restado - 2
+      $CHARACTERS:set_character_value($character, "stamina_restado", $new_stamina_restado)
+
+  - name: turn_stats_regeneration
+    script: |-
+      params state_stack_info
+      $CHARACTERS:run_foreach_character("restore_round_stats")
+
+states:
+  - name: RegeneracionBase
+    event_listeners:
+      - event: START_ROUND
+        script_name: turn_stats_regeneration

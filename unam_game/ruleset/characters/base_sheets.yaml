@@ -1,0 +1,516 @@
+name: CHARACTER_SHEETS
+weight: 0
+character_sheets:
+  - name: base_character_sheet
+    attribute_groups:
+      - attributes
+    attributes:
+      # TODO implement static config
+#      - name: attribute_max_min
+#        type: number
+#        values:
+#          - name: attr_max
+#            config:
+#              kind: static
+#              static: 25
+#          - name: attr_min
+#            config:
+#              kind: static
+#              static: 10
+      - name: fuerza
+        type: number
+        display: fuerza_total
+        groups:
+          - attributes
+        values:
+          - name: fuerza_base
+          - name: fuerza_mod
+          - name: fuerza_total
+            config:
+              kind: calc
+              calc: fuerza_base + fuerza_mod
+      - name: agilidad
+        type: number
+        display: agilidad_total
+        groups:
+          - attributes
+        values:
+          - name: agilidad_base
+          - name: agilidad_mod
+          - name: agilidad_total
+            config:
+              kind: calc
+              calc: agilidad_base + agilidad_mod
+      - name: resistencia
+        type: number
+        display: resistencia_total
+        groups:
+          - attributes
+        values:
+          - name: resistencia_base
+          - name: resistencia_mod
+          - name: resistencia_total
+            config:
+              kind: calc
+              calc: resistencia_base + resistencia_mod
+      - name: carisma
+        type: number
+        display: carisma_total
+        groups:
+          - attributes
+        values:
+          - name: carisma_base
+          - name: carisma_mod
+          - name: carisma_total
+            config:
+              kind: calc
+              calc: carisma_base + carisma_mod
+      - name: inteligencia
+        type: number
+        display: inteligencia_total
+        groups:
+          - attributes
+        values:
+          - name: inteligencia_base
+          - name: inteligencia_mod
+          - name: inteligencia_total
+            config:
+              kind: calc
+              calc: inteligencia_base + inteligencia_mod
+      - name: percepcion
+        type: number
+        display: percepcion_total
+        groups:
+          - attributes
+        values:
+          - name: percepcion_base
+          - name: percepcion_mod
+          - name: percepcion_total
+            config:
+              kind: calc
+              calc: percepcion_base + percepcion_mod
+      - name: empatia
+        type: number
+        display: empatia_total
+        groups:
+          - attributes
+        values:
+          - name: empatia_base
+          - name: empatia_mod
+          - name: empatia_total
+            config:
+              kind: calc
+              calc: empatia_base + empatia_mod
+      - name: sabiduria
+        type: number
+        display: sabiduria_total
+        groups:
+          - attributes
+        values:
+          - name: sabiduria_base
+          - name: sabiduria_mod
+          - name: sabiduria_total
+            config:
+              kind: calc
+              calc: sabiduria_base + sabiduria_mod
+      - name: poder
+        type: number
+        display: poder_total
+        groups:
+          - attributes
+        values:
+          - name: poder_base
+          - name: poder_mod
+          - name: poder_total
+            config:
+              kind: calc
+              calc: poder_base + poder_mod
+      - name: hp
+        type: number
+        display: hp_actual
+        groups:
+          - attributes
+        values:
+          - name: hp_base
+            config:
+              kind: calc
+              calc: resistencia_total + poder_total / 2 + fuerza_total / 2
+          - name: hp_mod
+          - name: hp_total
+            config:
+              kind: calc
+              calc: hp_base + hp_mod
+          - name: hp_restado
+            config:
+              kind: default
+              default: 0
+          - name: hp_actual
+            config:
+              kind: calc
+              calc: hp_total - hp_restado
+      - name: mana
+        type: number
+        display: mana_actual
+        groups:
+          - attributes
+        values:
+          - name: mana_base
+            config:
+              kind: calc
+              calc: poder_total + resistencia_total / 2
+          - name: mana_mod
+          - name: mana_total
+            config:
+              kind: calc
+              calc: mana_base + mana_mod
+          - name: mana_restado
+            config:
+              kind: calc
+              calc: 0
+          - name: mana_actual
+            config:
+              kind: calc
+              calc: mana_total - mana_restado
+      - name: stamina
+        type: number
+        display: stamina_actual
+        groups:
+          - attributes
+        values:
+          - name: stamina_base
+            config:
+              kind: calc
+              calc: resistencia_total + poder_total / 2
+          - name: stamina_mod
+          - name: stamina_total
+            config:
+              kind: calc
+              calc: stamina_base + stamina_mod
+          - name: stamina_restado
+            config:
+              kind: default
+              default: 0
+          - name: stamina_actual
+            config:
+              kind: calc
+              calc: stamina_total - stamina_restado
+      - name: velocidad
+        type: number
+        display: velocidad_total
+        groups:
+          - attributes
+        values:
+          - name: velocidad_base
+            config:
+              kind: calc
+              calc: agilidad_total + fuerza_total / 2
+          - name: velocidad_mod
+          - name: velocidad_total
+            config:
+              kind: calc
+              calc: velocidad_base + velocidad_mod
+          - name: velocidad_movimiento
+            config:
+              kind: calc
+              calc: (velocidad_total + fuerza_total / 2)
+          - name: acciones_por_round_base
+            config:
+              kind: calc
+              calc: (agilidad_total + percepcion_total / 2) / 10
+          - name: acciones_realizadas
+            config:
+              kind: default
+              default: 0
+          - name: acciones_restantes
+            config:
+              kind: calc
+              calc: acciones_por_round_base - acciones_realizadas
+      - name: iniciativa
+        type: number
+        values:
+          - name: iniciativa
+      - name: clase
+        type: text
+        display: clase
+        groups:
+          - attributes
+        values:
+          - name: clase
+            config:
+              kind: choices
+              choices:
+                - Paladin
+                - Clerigo
+                - Arquero
+                - Guerrero
+      - name: raza
+        type: text
+        display: raza
+        groups:
+          - attributes
+        values:
+          - name: raza
+            config:
+              kind: choices
+              choices:
+                - Humano
+                - Elfo
+                - Enano
+                - Orco
+      # ATRIBUTOS OCULTOS
+      - name: weapon_equiped
+        type: number
+        values:
+          - name: weapon_equipped
+    actions:
+      - name: pinia
+        target:
+          type: CHAR
+          filter: |-
+            params character, targer
+            let dx = $TARGET.position.x - $CHARACTER.position.x
+            let dy = $TARGET.position.y - $CHARACTER.position.y
+            set dx = $TOOLS:math_mod($dx)
+            set dy = $TOOLS:math_mod($dy)
+            output ($dx <= 1) and ($dy <= 1)
+        script: |-
+          params character, target
+          
+          let stamina_cost = 1
+          let mana_cost = 1
+          let action_cost = 1
+          $SCRIPTS:subtract_action_cost($character, $action_cost, $stamina_cost, $mana_cost)
+
+          let roll_result = $SCRIPTS:roll_melee_attack($character, $target)
+          
+          if $roll_result
+            then
+              let damage = $character.values.fuerza_total / 4
+              $TOOLS:print($character.name,"made",$damage,"of damage to", $target.name)
+              #$TOOLS:print($target.name,"initial hp",$target.values.hp_actual)
+              let new_hp_restado = $target.values.hp_restado + $damage
+              $CHARACTERS:set_character_value($target, "hp_restado", $new_hp_restado)
+              $TOOLS:print($target.name,"current hp",$target.values.hp_actual)
+            else
+              $TOOLS:print($character.name,"missed the attack...")
+          end-if
+#      - name: patada
+#        target:
+#          type: CHAR
+#          filter: |-
+#            params character, targer
+#            let dx = $TARGET.position.x - $CHARACTER.position.x
+#            let dy = $TARGET.position.y - $CHARACTER.position.y
+#            set dx = $TOOLS:math_mod($dx)
+#            set dy = $TOOLS:math_mod($dy)
+#            output ($dx <= 1) and ($dy <= 1)
+#        script: |-
+#          params character, target
+#          let attacker_roll = $TOOLS:roll("1d20")
+#          let attacker_roll_result = $attacker_roll + $character.values.agilidad_total + $character.values.percepcion_total / 2
+#          let target_roll = $TOOLS:roll("1d20")
+#          let target_roll_result = $target_roll + $target.values.agilidad_total + $target.values.percepcion_total / 2
+#
+#          $TOOLS:print($character.name,"tries to attack, with",$character.values.stamina_actual,"stamina")
+#
+#          let new_stamina_restado = $character.values.stamina_restado + 4
+#          $CHARACTERS:set_character_value($character, "stamina_restado", $new_stamina_restado)
+#
+#
+#          if $attacker_roll_result > $target_roll_result
+#            then
+#              let damage = $character.values.fuerza_total
+#              $TOOLS:print($character.name,"made",$damage,"of damage to", $target.name)
+#              $TOOLS:print($target.name,"initial hp",$target.values.hp_actual)
+#
+#              let new_hp_restado = $target.values.hp_restado + $damage
+#              $CHARACTERS:set_character_value($target, "hp_restado", $new_hp_restado)
+#
+#              $TOOLS:print($target.name,"current hp",$target.values.hp_actual)
+#            else
+#              $TOOLS:print($character.name,"missed the attack...")
+#          end-if
+#          $TOOLS:print("current stamina is ",$character.values.stamina_actual)
+      - name: caminar
+        target:
+          type: TILE
+          filter: |-
+            params character, targer
+            let dx = $TARGET.position.x - $CHARACTER.position.x
+            let dy = $TARGET.position.y - $CHARACTER.position.y
+            set dx = $TOOLS:math_mod($dx)
+            set dy = $TOOLS:math_mod($dy)
+            let distance = $TOOLS:vector_length($dx, $dy)
+            output $distance <= $character.values.velocidad_total
+        script: |-
+          params character, target
+          
+          let new_stamina_restado = $character.values.stamina_restado + (1/2)    
+          let new_acciones_realizadas = $character.values.acciones_realizadas + 1
+          $CHARACTERS:set_character_value($character, "stamina_restado", $new_stamina_restado)
+          $CHARACTERS:set_character_value($character, "acciones_realizadas", $new_acciones_realizadas)
+
+          $TOOLS:print($character.name, "moves 1 step in direction:", $target)
+          $CHARACTERS:set_character_position($character, $target)
+          $TOOLS:print("current position:",$character.position.x,",",$character.position.y)
+#      - name: escupir veneno
+#        target:
+#          type: CHAR
+#          filter: |-
+#            params character, targer
+#            let dx = $TARGET.position.x - $CHARACTER.position.x
+#            let dy = $TARGET.position.y - $CHARACTER.position.y
+#            set dx = $TOOLS:math_mod($dx)
+#            set dy = $TOOLS:math_mod($dy)
+#            output ($dx <= 1) and ($dy <= 1)
+#        script: |-
+#          let roll_result = $SCRIPTS:roll_melee_attack($character, $target)
+#          let accion_cost = 1
+#          let stamina_cost = 1
+#          $SCRIPTS:subtract_melee_attack_cost($character, $action_cost, $stamina_cost)
+#
+#          if $roll_result
+#          then
+#            $CHARACTERS:apply_state($target, "Envenenado_LEVEL1")
+#          else
+#            $TOOLS:print($character.name,"missed the attack...")
+#          end-if
+#
+#      # EJEMPLO DE OVERLOAD
+#      - name: punch
+#        target:
+#          type: MAPELEMENT
+#          filter: |-
+#            $COMBAT:merlee_range_filter($CHARACTER, $TARGET)
+#        rule: |-
+#          let source_roll = $TOOLS:roll(1d20) + $CHARACTER.fuerza_total
+#          let target_roll = $TOOLS:roll(1d20) + $TARGET.agilidad_total
+#
+#          if $target_roll > $source_roll
+#            then
+#              let damage = $CHARACTER.fuerza_total + $CHARACTER.weapon_damage
+#              $RULESET:inflict_damage($damage)
+#            else
+#              $TARGET.morale = $TARGET.morale + 1
+#          if-end
+#
+#
+#        $SPELLS:fire_ball()
+
+      # ADVANCED EXAMPLE
+
+#    - name: melee_basic_attack
+#      target:
+#        type: NPC
+#        filter: |-
+#          let dx = $TOOLS:math_mod(($TARGET.position_x - $CHARACTER.position_x))
+#          let dy = $TOOLS:math_mod(($TARGET.position_y - $CHARACTER.position_y))
+#          if ($CHARACTER.weapon_equipped > 0)
+#          then
+#            let range = $RULESET:get_weapon_range($CHARACTER)
+#          else
+#            let range = 1
+#          if ($dx + $dy =< range)
+#          then output true
+#          else output false
+#      rule: |-
+#        let source_roll = $TOOLS:roll(1d20) + $CHARACTER.fuerza_total
+#        let target_roll = $TOOLS:roll(1d20) + $TARGET.agilidad_total
+#
+#        if $target_roll > $source_roll
+#        then
+#          let damage = $CHARACTER.fuerza_total + $CHARACTER.weapon_damage
+#          $RULESET:inflict_damage($damage)
+#        else
+#          $TARGET.morale = $TARGET.morale + 1
+scripts:
+  - name: get_poison_modifier
+    script: |-
+      params state_name
+      let poison_mod = 0
+      if $state_name == "Envenenado_LEVEL1"
+      then
+        set poison_mod = 1
+      else
+      #pass
+      end-if
+      if $state_name == "Envenenado_LEVEL2"
+      then
+        set poison_mod = 3/2
+      else
+      #pass
+      end-if
+      if $state_name == "Envenenado_LEVEL3"
+      then
+        set poison_mod = 2
+      else
+      #pass
+      end-if
+      output $poison_mod
+  - name: apply_poison_damage
+    script: |-
+      params state_stack_info, character
+    
+      let base_dmg = 3  
+      let poison_mod = $SCRIPTS:get_poison_modifier($state_stack_info.state_name)
+      let remaining_turns = $base_dmg * $poison_mod - $state_stack_info.exec_count
+      if $character.id == $state_stack_info.character_id
+      then
+        if $remaining_turns > 0
+        then
+          $TOOLS:print($character.name, "IS POISONED for ", $remaining_turns ,"more turns...")
+          $TOOLS:print($character.name,"initial hp",$character.values.hp_actual)
+          let hp_restado =  $character.values.hp_restado + 3
+          $CHARACTERS:set_character_value($character, "hp_restado", $hp_restado)
+          $TOOLS:print("RECIEVES 3 POINTS OF POISON DAMAGES - Now hp is", $character.values.hp_actual)
+        else
+          $TOOLS:print($character.name, "IS NO LONGER POISONED!!")
+          $CHARACTERS:remove_state_stack($state_stack_info)
+        end-if
+      else
+      end-if
+      break
+      $TOOLS:print("this should not be printed")
+      $TOOLS:print("this should not be printed")
+      $TOOLS:print("this should not be printed")
+      $TOOLS:print("this should not be printed")
+      $TOOLS:print("this should not be printed")
+      $TOOLS:print("this should not be printed")
+states:
+  - name: Envenenado_LEVEL1
+    on_apply: |-
+      params character
+      $TOOLS:print($character.name, "is poisoned! Initial resistencia", $character.values.resistencia_total)
+      let resistencia_mod = $character.values.resistencia_mod - 4
+      $CHARACTERS:set_character_value($character, "resistencia_mod", $resistencia_mod)
+      $TOOLS:print($character.name, "resistencia is now", $character.values.resistencia_total)
+    event_listeners:
+      - event: START_TURN
+        script_name: apply_poison_damage
+    on_remove: |-
+      params character
+      $TOOLS:print($character.name, "is not poisoned anymore! Initial resistencia", $character.values.resistencia_total)
+      let resistencia_mod = $character.values.resistencia_mod + 4
+      $CHARACTERS:set_character_value($character, "resistencia_mod", $resistencia_mod)
+      $TOOLS:print($character.name, "resistencia is now", $character.values.resistencia_total)
+  - name: Regeneracion
+    event_listeners:
+      - event: START_ROUND
+        script_name: turn_stats_regeneration
+  - name: Envenenado_LEVEL2
+    on_apply: |-
+      params character
+      $TOOLS:print($character.name, "is poisoned! Initial resistencia", $character.values.resistencia_total)
+      let resistencia_mod = $character.values.resistencia_mod - 8
+      $CHARACTERS:set_character_value($character, "resistencia_mod", $resistencia_mod)
+      $TOOLS:print($character.name, "resistencia is now", $character.values.resistencia_total)
+    event_listeners:
+      - event: START_TURN
+        script_name: apply_poison_damage
+    on_remove: |-
+      params character
+      $TOOLS:print($character.name, "is not poisoned anymore! Initial resistencia", $character.values.resistencia_total)
+      let resistencia_mod = $character.values.resistencia_mod + 8
+      $CHARACTERS:set_character_value($character, "resistencia_mod", $resistencia_mod)
+      $TOOLS:print($character.name, "resistencia is now", $character.values.resistencia_total)
+

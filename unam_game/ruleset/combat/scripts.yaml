@@ -1,0 +1,40 @@
+name: TURN_SCRIPT
+weight: 0
+scripts:
+  - name: roll_melee_attack
+    script: |-
+      params character, target
+      
+      let attacker_roll = $TOOLS:roll("1d20")
+      let attacker_roll_result = $attacker_roll + $character.values.agilidad_total + $character.values.percepcion_total / 2
+      let target_roll = $TOOLS:roll("1d20")
+      let target_roll_result = $target_roll + $target.values.agilidad_total + $target.values.percepcion_total / 2
+      
+      output ($attacker_roll_result > $target_roll_result)
+
+  - name: subtract_action_cost
+    script: |-
+      params character, accion_realizada_cost, stamina_cost, mana_cost
+      
+      if $accion_realizada_cost != 0
+      then
+        let new_acciones_realizadas = $character.values.acciones_realizadas + $accion_realizada_cost
+        $CHARACTERS:set_character_value($character, "acciones_realizadas", $new_acciones_realizadas)
+      else
+      end-if
+      
+      if $stamina_cost!= 0
+      then
+        let new_stamina_restado = $character.values.stamina_restado + $stamina_cost
+        $CHARACTERS:set_character_value($character, "stamina_restado", $new_stamina_restado)
+      else
+      end-if
+      
+      if $mana_cost != 0
+      then
+        let new_mana_restado = $character.values.mana_restado + $mana_cost
+        $CHARACTERS:set_character_value($character, "mana_restado", $new_mana_restado)
+      else
+      end-if
+      
+
